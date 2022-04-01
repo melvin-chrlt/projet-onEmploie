@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une offre{% endblock %}
+
+{% block body %}
+    <h1>Nouvelle offre</h1>
+
+    {{ form_start(formNewOffres) }}
+        {{ form_row(formNewOffres.name) }}
+        {{ form_row(formNewOffres.author) }}
+        {{ form_row(formNewOffres.place) }}
+        {{ form_row(formNewOffres.salary) }}
+        {{ form_row(formNewOffres.description) }}
+
+        <button type="submit" class="btn">Ajouter</button>
+    {{ form_end(formNewOffres) }}
+{% endblock %}
