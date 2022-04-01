@@ -17,9 +17,6 @@ class Offres
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $author;
-
-    #[ORM\Column(type: 'string', length: 255)]
     private $place;
 
     #[ORM\Column(type: 'integer')]
@@ -27,6 +24,10 @@ class Offres
 
     #[ORM\Column(type: 'text')]
     private $description;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'offres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $author;
 
     public function getId(): ?int
     {
@@ -41,18 +42,6 @@ class Offres
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }
@@ -89,6 +78,18 @@ class Offres
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

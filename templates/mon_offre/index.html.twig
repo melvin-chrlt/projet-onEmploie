@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon offre{% endblock %}
+
+{% block body %}
+    <h1>Mon offre :</h1>
+    <div>
+        <p>Poste : {{ entity.name }}</p>
+        <p>Lieu : {{ entity.place }} </p>
+        <p>Salaire : {{ entity.salary }} €</p>
+        <p>Description : {{ entity.description }} </p>
+        <a href="{{ path('app_edit_offre', {id:entity.id}) }}">Modifier</a>
+        <form action="{{path('app_delete_offre', {id:entity.id})}}" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token('entity_delete_' ~ entity.id) }}">
+            <button type="submit" style="background-color:red;">Supprimer</button>
+        </form>
+    </div>
+{% endblock %}

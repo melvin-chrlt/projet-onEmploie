@@ -7,8 +7,17 @@
         <h1>OnEmploie.com</h1>
         <p>(Côté entreprise)</p>
         <h3>Bienvenue sur OnEmploie.com !</h3>
-        <a href="/register">S'inscrire</a>
-        <a href="/login">Se connecter</a>
-        <a href="/logout" style="color:red;">Se déconnecter</a>
+        <div>
+            {% if is_granted('ROLE_USER') %}
+                <a href="/logout" style="color:red;">Se déconnecter</a>
+            {% else %}
+                <a href="/register">S'inscrire</a>
+                <a href="/login">Se connecter</a>
+            {% endif %}
+        </div>
+        {% if is_granted('ROLE_USER') %}
+            <a href="/offres">Ajouter une offre</a>
+            <a href="/mesOffres">Voir mes offres</a>
+        {% endif %}
     </section>
 {% endblock %}

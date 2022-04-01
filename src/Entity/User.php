@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -31,6 +33,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     private $password;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Offres::class, orphanRemoval: true)]
+    private $offres;
+
+    public function __construct()
+    {
+        $this->offres = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -145,6 +155,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Offres>
+     */
+    public function getOffres(): Collection
+    {
+        return $this->offres;
+    }
+
+    public function addOffre(Offres $offre): self
+    {
+        if (!$this->offres->contains($offre)) {
+            $this->offres[] = $offre;
+            $offre->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffre(Offres $offre): self
+    {
+        if ($this->offres->removeElement($offre)) {
+            // set the owning side to null (unless already changed)
+            if ($offre->getAuthor() === $this) {
+                $offre->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 
 }

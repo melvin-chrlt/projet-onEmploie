@@ -13,7 +13,6 @@ class OffresType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('author')
             ->add('place')
             ->add('salary')
             ->add('description')
