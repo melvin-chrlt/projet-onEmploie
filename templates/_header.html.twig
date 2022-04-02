@@ -1,0 +1,15 @@
+<header>
+    <nav>
+        <a href="/"><h3>OnEmploie.com</h3></a>
+        <div>
+            {% if is_granted('ROLE_USER') %}
+                <a href="/offres">Ajouter une offre</a>
+                <a href="/mesOffres">Voir mes offres</a>
+                <a href="/logout" style="color:red;">Se déconnecter</a>
+            {% else %}
+                <a href="/register">S'inscrire</a>
+                <a href="/login">Se connecter</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>

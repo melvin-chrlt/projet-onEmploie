@@ -1,0 +1,33 @@
+header{
+    background-color: black;
+
+    nav{
+        padding: 1em 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        h3{
+            color: white;
+        }
+
+        div{
+            display: flex;
+            gap: 2em;
+
+            a{
+                color: white;
+                padding: 0.5em;
+                border: lightgray 1px solid;
+                border-radius: 15px;
+                transition: all 0.2s ease-in-out;
+            }
+
+            a:hover{
+                color: black;
+                background-color: white;
+            }
+        }
+    }
+
+}
