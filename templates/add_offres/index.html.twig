@@ -3,13 +3,15 @@
 {% block title %}Ajouter une offre{% endblock %}
 
 {% block body %}
-    <h1>Nouvelle offre</h1>
+    <section id="addOffre">
+        <h1>Nouvelle offre</h1>
 
-    {{ form_start(formNewOffres) }}
-        {{ form_row(formNewOffres.name) }}
-        {{ form_row(formNewOffres.place) }}
-        {{ form_row(formNewOffres.salary) }}
-        {{ form_row(formNewOffres.description) }}
-        <button type="submit" class="btn">Ajouter</button>
-    {{ form_end(formNewOffres) }}
+        {{ form_start(formNewOffres) }}
+            {{ form_row(formNewOffres.name, { 'label': 'Nom :' }) }}
+            {{ form_row(formNewOffres.place, { 'label': 'Lieu :' }) }}
+            {{ form_row(formNewOffres.salary, { 'label': 'Salaire :' }) }}
+            {{ form_row(formNewOffres.description, { 'label': 'Description :' }) }}
+            <button type="submit" class="btn">Ajouter</button>
+        {{ form_end(formNewOffres) }}
+    </section>
 {% endblock %}

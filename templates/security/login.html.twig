@@ -16,9 +16,9 @@
             </div>
         {% endif %}
 
-        <label for="inputEmail">Email</label>
+        <label for="inputEmail">Email :</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-        <label for="inputPassword">Mot de passe</label>
+        <label for="inputPassword">Mot de passe :</label>
         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
         <input type="hidden" name="_csrf_token"
@@ -38,7 +38,7 @@
 
         <button type="submit">Se connecter</button>
     </form>
-    <p>Vous êtes nouveau ? </p><a href="/register">Créez un compte</a>
+    <p>Vous êtes nouveau ? </p><a href="/">Créez un compte</a>
 </section>
 
 {% endblock %}

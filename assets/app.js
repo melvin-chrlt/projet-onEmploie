@@ -9,8 +9,8 @@
 import './styles/app.scss';
 import './styles/_header.scss';
 import './styles/home.scss';
-import './styles/login.scss';
-import './styles/register.scss';
+import './styles/formPage.scss';
+import './styles/allOffres.scss';
 
 // start the Stimulus application
 import './bootstrap';

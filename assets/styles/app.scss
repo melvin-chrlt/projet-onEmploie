@@ -14,3 +14,18 @@
 body {
     background-color: lightgray;
 }
+
+#success, #error{
+    padding: 1em 2em;
+    background-color: green;
+    color: white;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#error{
+    background-color: red;
+}

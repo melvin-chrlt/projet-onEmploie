@@ -7,7 +7,12 @@
                     <a href="/addOffre">Ajouter une offre</a>
                     <a href="/allOffres">Voir les offres</a>
                     <a href="/logout" style="color:red;">Se déconnecter</a>
+                {% elseif is_granted('ROLE_CANDIDATE') %}
+                    <a href="/allOffres">Voir les offres</a>
+                    <a href="/logout" style="color:red;">Se déconnecter</a>
                 {% endif %}
+            {% else %}
+                <a href="/login">Se connecter</a>
             {% endif %}
         </div>
     </nav>

@@ -3,15 +3,36 @@
 {% block title %}Offres disponibles{% endblock %}
 
 {% block body %}
-    <h1>Offres disponibles :</h1>
-    {% for entity in entities %}
-            <div>
-                <p>Poste : {{ entity.name }}</p>
-                <p>Entreprise : {{ entity.author.name }}</p>
-                <p>Lieu : {{ entity.place }} </p>
-                <p>Salaire : {{ entity.salary }} €</p>
-                <p>Description : {{ entity.description }} </p>
-                <a href="{{ path("app_mon_offre", {id:entity.id}) }}">Voir en détails</a>
-            </div> <br>
-    {% endfor %}
+    <section id="allOffres">
+        <h1>Offres disponibles :</h1>
+        <div id="offres">
+            {% for entity in entities %}
+            {% for message in app.flashes('success') %}
+                <div id="success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div id="error">
+                    {{ message }}
+                </div>
+            {% endfor %}
+                <article>
+                    <div id="leftPart">
+                        <p>{{ entity.name }}</p>
+                        <div id="place">
+                            <p>{{ entity.author.name }}</p>
+                            <p>-</p>
+                            <p>{{ entity.place }} </p>
+                        </div>
+                        <p>{{ entity.salary }} € /mois</p>
+                        <p>{{ entity.description }} </p>
+                    </div>
+                    <div id="more">
+                        <a href="{{ path("app_mon_offre", {id:entity.id}) }}">Voir l'offre</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}

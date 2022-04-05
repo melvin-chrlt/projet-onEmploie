@@ -2,17 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Offres;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CandidateRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity(repositoryClass: CandidateRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,7 +21,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private $firstName;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $lastName;
     
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
@@ -48,14 +52,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->name;
+        return $this->firstName;
     }
 
-    public function setName(string $name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->name = $name;
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -110,7 +126,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles = ["ROLE_USER"];
+        $roles = ["ROLE_CANDIDATE"];
 
         return array_unique($roles);
     }
@@ -165,7 +181,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->offres;
     }
 
-    public function addOffre(Offres $offre): self
+    public function addOffres(Offres $offre): self
     {
         if (!$this->offres->contains($offre)) {
             $this->offres[] = $offre;
@@ -175,7 +191,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeOffre(Offres $offre): self
+    public function removeOffres(Offres $offre): self
     {
         if ($this->offres->removeElement($offre)) {
             // set the owning side to null (unless already changed)

@@ -17,6 +17,7 @@ class OffresController extends AbstractController
 {
     // -- ADD OFFER --
     #[Route('/addOffre', name: 'app_add_offre')]
+    #[IsGranted('ROLE_USER')]
     public function newOffres(Request $request, EntityManagerInterface $em): Response
     {
         $offres = new Offres(); //créer nouvelle offre
@@ -28,6 +29,8 @@ class OffresController extends AbstractController
             $em->persist($offres);
             $em->flush();
 
+            $this->addFlash('success', 'Votre offre a bien été ajoutée.');
+
             return $this->redirectToRoute('app_mes_offres');
         }
         
@@ -38,7 +41,7 @@ class OffresController extends AbstractController
 
     // -- SHOW ALL OFFERS --
     #[Route('/allOffres', name:'app_mes_offres')]
-    public function mesOffres(OffresRepository $entityRepository, UserRepository $userEntityRepository): Response
+    public function mesOffres(OffresRepository $entityRepository): Response
     {
         $entities = $entityRepository->findBy([], ['id' => 'DESC']);
         
@@ -81,18 +84,31 @@ class OffresController extends AbstractController
                 'entity' => $entity,
                 'form' => $form,
             ]);
+        } else {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier ni supprimer une offre qui ne vous appartient pas.');
+            return $this->redirectToRoute('app_mes_offres');
         }
     }
 
     // -- DELETE OFFER --
     #[Route('/delete/{id<\d+>}', name:'app_delete_offre')]
+    #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Offres $entity, EntityManagerInterface $em)
     {
-        if ($this->isCsrfTokenValid('entity_delete_'.$entity->getId(), $request->request->get('csrf_token'))) {
-                $em->remove($entity);
-                $em->flush();
+        if($this->getUser() === $entity->getAuthor()){
+
+            if ($this->isCsrfTokenValid('entity_delete_'.$entity->getId(), $request->request->get('csrf_token'))) {
+                    $em->remove($entity);
+                    $em->flush();
+            }
+            
+            $this->addFlash('success', 'Votre offre a bien été supprimée.');
+
+            return $this->redirectToRoute('app_mes_offres');
+
+        } else {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier ni supprimer une offre qui ne vous appartient pas.');
+            return $this->redirectToRoute('app_mes_offres');
         }
-    
-        return $this->redirectToRoute('app_mes_offres');
     }
 }
