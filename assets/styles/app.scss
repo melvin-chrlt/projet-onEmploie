@@ -1,8 +1,14 @@
+@font-face {
+    font-family: Montserrat;
+    src: url(fonts/static/Montserrat-Regular.ttf);
+}
+
 *{
     margin: 0;
     padding: 0;
     list-style: none;
     text-decoration: none;
+    font-family: Montserrat;
 }
 
 body {

@@ -1,19 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes offres{% endblock %}
+{% block title %}Offres disponibles{% endblock %}
 
 {% block body %}
-    <h1>Mes offres :</h1>
+    <h1>Offres disponibles :</h1>
     {% for entity in entities %}
-        {# {% for userEntity in userEntities %} #}
             <div>
-                {# <p>{{ userEntities.name  }}</p> #}
                 <p>Poste : {{ entity.name }}</p>
+                <p>Entreprise : {{ entity.author.name }}</p>
                 <p>Lieu : {{ entity.place }} </p>
                 <p>Salaire : {{ entity.salary }} €</p>
                 <p>Description : {{ entity.description }} </p>
                 <a href="{{ path("app_mon_offre", {id:entity.id}) }}">Voir en détails</a>
             </div> <br>
-        {# {% endfor %} #}
     {% endfor %}
 {% endblock %}

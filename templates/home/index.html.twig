@@ -3,9 +3,20 @@
 {% block title %}OnEmploie.com{% endblock %}
 
 {% block body %}
-    <section>
-        <h1>OnEmploie.com</h1>
-        <p>(Côté entreprise)</p>
+    <section id="home">
+        <h1>OnEmploie.com</h1> <br>
         <h3>Bienvenue sur OnEmploie.com !</h3>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <h4>En construction..</h4>
+        {% else %}
+            <div>
+                <a id="aLeft" href="/login">
+                    <h2>Je recherche un emploi</h2>
+                </a>
+                <a id="aRight" href="/login">
+                    <h2>Je suis une entreprise</h2>
+                </a>
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

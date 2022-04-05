@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Offres;
 use App\Form\OffresType;
+use App\Repository\UserRepository;
 use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,15 +15,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OffresController extends AbstractController
 {
-     
     // -- ADD OFFER --
-    #[Route('/offres', name: 'app_offres')]
+    #[Route('/addOffre', name: 'app_add_offre')]
     public function newOffres(Request $request, EntityManagerInterface $em): Response
     {
-        $offres = new Offres();
-        $offres->setAuthor($this->getUser());
-        $form = $this->createForm(OffresType::class, $offres);
-        $form->handleRequest($request);
+        $offres = new Offres(); //créer nouvelle offre
+        $offres->setAuthor($this->getUser()); //récup l'auteur automatiquement
+        $form = $this->createForm(OffresType::class, $offres); //créer un formulaire
+        $form->handleRequest($request); //renvoi le formulaire
         
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($offres);
@@ -30,22 +31,18 @@ class OffresController extends AbstractController
             return $this->redirectToRoute('app_mes_offres');
         }
         
-        return $this->render('offres/index.html.twig', [
+        return $this->render('add_offres/index.html.twig', [
             'formNewOffres' => $form->createView()
         ]);
-        
-        // return $this->render('mes_offres/index.html.twig', [
-        //     'formNewOffres' => $form->createView()
-        // ]);
     }
 
     // -- SHOW ALL OFFERS --
-    #[Route('/mesOffres', name:'app_mes_offres')]
-    public function mesOffres(OffresRepository $entityRepository): Response
+    #[Route('/allOffres', name:'app_mes_offres')]
+    public function mesOffres(OffresRepository $entityRepository, UserRepository $userEntityRepository): Response
     {
-        $entities = $entityRepository->findAll();
+        $entities = $entityRepository->findBy([], ['id' => 'DESC']);
         
-        return $this->render('mes_offres/index.html.twig', [
+        return $this->render('all_offres/index.html.twig', [
             'entities' => $entities,
         ]);
     }
@@ -58,40 +55,33 @@ class OffresController extends AbstractController
             'entity' => $entity,
         ]);
     }
-
-    
-    // #[Route('/mesOffres', name:'app_mes_offres')]
-    // public function User(UserRepository $entityRepository): Response
-    // {
-        //     $userEntities = $entityRepository->findAll();
-        
-        //     return $this->render('mes_offres/index.html.twig', [
-            //         'userEntities' => $userEntities,
-            //     ]);
-            // }
     
     // -- EDIT OFFER --     
     #[Route('/edit/{id<\d+>}', name:'app_edit_offre')]
+    #[IsGranted('ROLE_USER')]
     public function edit(EntityManagerInterface $em, Request $request, Offres $entity)
     {
-        $form = $this->createForm(OffresType::class, $entity);
+        if($this->getUser() === $entity->getAuthor()){
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $offre = $this->getUser();
-            $entity->setAuthor($offre);
+            $form = $this->createForm(OffresType::class, $entity);
 
-            $em->flush();
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $offre = $this->getUser();
+                $entity->setAuthor($offre);
 
-            $this->addFlash('success', 'Votre offre a bien été modifiée.');
+                $em->flush();
 
-            return $this->redirectToRoute('app_mes_offres');
+                $this->addFlash('success', 'Votre offre a bien été modifiée.');
+
+                return $this->redirectToRoute('app_mes_offres');
+            }
+            
+            return $this->renderForm('edit_offre/index.html.twig', [
+                'entity' => $entity,
+                'form' => $form,
+            ]);
         }
-        
-        return $this->renderForm('edit_offre/index.html.twig', [
-            'entity' => $entity,
-            'form' => $form,
-        ]);
     }
 
     // -- DELETE OFFER --
