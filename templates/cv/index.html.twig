@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création du CV{% endblock %}
+
+{% block body %}
+    <section id="addCV">
+        <h1>Nouveau CV</h1>
+
+        {{ form_start(formNewCV) }}
+            {{ form_row(formNewCV.firstName, { 'label': 'Prénom :' }) }}
+            {{ form_row(formNewCV.lastName, { 'label': 'Nom :' }) }}
+            {{ form_row(formNewCV.adresse, { 'label': 'Adresse :' }) }}
+            {{ form_row(formNewCV.ville, { 'label': 'Ville :' }) }}
+            {{ form_row(formNewCV.phone, { 'label': 'Téléphone :' }) }}
+            {{ form_row(formNewCV.diplome, { 'label': 'Dîplome :' }) }}
+            {{ form_row(formNewCV.etablissement, { 'label': 'Etablissement :' }) }}
+            {{ form_row(formNewCV.poste, { 'label': 'Poste :' }) }}
+            {{ form_row(formNewCV.entreprise, { 'label': 'Entreprise :' }) }}
+            {{ form_row(formNewCV.description, { 'label': 'Description :' }) }}
+            <button type="submit" class="btn">Ajouter</button>
+        {{ form_end(formNewCV) }}
+    </section>
+{% endblock %}

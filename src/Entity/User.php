@@ -2,16 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+/**
+ * @Vich\Uploadable
+ */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -36,12 +41,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Offres::class, orphanRemoval: true)]
     private $offres;
+    
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $logo;
+    
+    //#[Vich\UploadableField(mapping: 'user_logo', fileNameProperty:'logo')]
+    
+    /** 
+     * @Vich\UploadableField(mapping="user_logo", fileNameProperty="logo")]
+     */
+    private $logoFile;
 
     public function __construct()
     {
         $this->offres = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -187,4 +209,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): self
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+    
+    public function getLogoFile(): ?File
+    {
+        return $this->logoFile;
+    }
+
+    public function setLogoFile(?File $logoFile = null): void
+    {
+        $this->logoFile = $logoFile;
+
+        if($logoFile !== null){
+            $this->updatedAt = new \DateTime();
+        }
+
+        return;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function defaultCreatedAt(): self
+    {
+        $this->createdAt = new \DateTime();
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function defaultUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTime();
+
+        return $this;
+    }
 }

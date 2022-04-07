@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\OffresRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OffresRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
 class Offres
 {
     #[ORM\Id]
@@ -22,12 +25,35 @@ class Offres
     #[ORM\Column(type: 'integer')]
     private $salary;
 
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private $updatedAt;
+
     #[ORM\Column(type: 'text')]
     private $description;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'offres')]
     #[ORM\JoinColumn(nullable: false)]
     private $author;
+
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'offres')]
+    private $categories;
+
+    #[ORM\ManyToOne(targetEntity: ContractType::class, inversedBy: 'offres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $contractType;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +96,47 @@ class Offres
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function defaultCreatedAt(): self
+    {
+        $this->createdAt = new \DateTime();
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function defaultUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTime();
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -90,6 +157,42 @@ class Offres
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getContractType(): ?ContractType
+    {
+        return $this->contractType;
+    }
+
+    public function setContractType(?ContractType $contractType): self
+    {
+        $this->contractType = $contractType;
 
         return $this;
     }

@@ -18,6 +18,11 @@
                 </div>
             {% endfor %}
                 <article>
+                {% if entity.author.logo is empty %}
+
+                    {% else %}
+                        <img src={{ vich_uploader_asset(entity.author) }} alt={{ entity.name }}>
+                {% endif %}
                     <div id="leftPart">
                         <p>{{ entity.name }}</p>
                         <div id="place">
@@ -26,7 +31,14 @@
                             <p>{{ entity.place }} </p>
                         </div>
                         <p>{{ entity.salary }} € /mois</p>
+                        {% for category in entity.categories %}
+                            <p>{{ category.label }}</p>
+                        {% endfor %}
+                        {% for contract in entity.contractType %}
+                            <p>{{ contract.label }}</p>
+                        {% endfor %}
                         <p>{{ entity.description }} </p>
+                        <p>Publié le : {{ entity.createdAt | date('d/m/Y') }} </p>
                     </div>
                     <div id="more">
                         <a href="{{ path("app_mon_offre", {id:entity.id}) }}">Voir l'offre</a>

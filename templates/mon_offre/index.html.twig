@@ -9,13 +9,15 @@
         <p>Lieu : {{ entity.place }} </p>
         <p>Salaire : {{ entity.salary }} €</p>
         <p>Description : {{ entity.description }} </p>
-        {% if is_granted('ROLE_USER') %}
+        <p>Publié le : {{ entity.createdAt | date('d/m/Y') }} </p>
+        {# {% if is_granted('ROLE_USER') %}
             <a href="{{ path('app_edit_offre', {id:entity.id}) }}">Modifier</a>
             <form action="{{path('app_delete_offre', {id:entity.id})}}" method="POST">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token('entity_delete_' ~ entity.id) }}">
                 <button type="submit" style="background-color:red;">Supprimer</button>
             </form>
-        {% endif %}
+        {% endif %} #}
+        <a href="/admin">Modifier l'offre</a>
     </div>
 {% endblock %}

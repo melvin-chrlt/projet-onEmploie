@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OnEmploie.com | Profil{% endblock %}
+
+{% block body %}
+    <section id="profil">
+        <h1>OnEmploie.com</h1> <br>
+        <h2>Profil de {% for entity in entities %} {{ entity.firstName}} {% endfor %}</h2>
+        {# <h2>Profil de {{ entity.firstName}}</h2> #}
+        <h4>En construction..</h4>
+        <a href="/cv">Ajouter mon CV</a>
+        {% for message in app.flashes('success') %}
+            <div id="success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for entity in entities %}
+        <div>
+            <p>Prénom : {{ entity.firstName }}</p>
+            <p>Nom : {{ entity.lastName }}</p>
+            <p>Adresse : {{ entity.adresse }}</p>
+            <p>Ville : {{ entity.ville }}</p>
+            <p>Téléphone : {{ entity.phone }}</p>
+            <div>
+                <h3>Diplôme(s) :</h3>
+                <p>Etablissement : {{ entity.etablissement }}</p>
+            </div>
+            <div>
+                <h3>Expériences :</h3>
+                <p>Poste : {{ entity.poste }}</p>
+                <p>Entreprise : {{ entity.entreprise }}</p>
+                <p>Description : {{ entity.description }}</p>
+            </div>
+            <a href="{{ path('app_edit_cv', {id:entity.id}) }}">Modifier mon CV</a>
+        </div> <br>
+        {% endfor %}
+        {# <div>
+            <p>Prénom : {{ entity.firstName }}</p>
+            <p>Nom : {{ entity.lastName }}</p>
+            <p>Adresse : {{ entity.adresse }}</p>
+            <p>Ville : {{ entity.ville }}</p>
+            <p>Téléphone : {{ entity.phone }}</p>
+            <div>
+                <h3>Dîplome(s) :</h3>
+                <p>Etablissement : {{ entity.etablissement }}</p>
+            </div>
+            <div>
+                <h3>Expériences :</h3>
+                <p>Poste : {{ entity.poste }}</p>
+                <p>Entreprise : {{ entity.entreprise }}</p>
+                <p>Description : {{ entity.description }}</p>
+            </div>
+            <a href="{{ path('app_edit_cv', {id:entity.id}) }}">Modifier mon CV</a>
+        </div> #}
+    </section>
+{% endblock %}
