@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CandidateRepository;
+use App\Repository\AdminRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ORM\Entity(repositoryClass: CandidateRepository::class)]
-class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: AdminRepository::class)]
+class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,21 +22,15 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private $lastName;
-    
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $phone;
+    private $email;
 
     #[ORM\Column(type: 'json')]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
     private $password;
-
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Offres::class, orphanRemoval: true)]
-    private $offres;
 
     public function __construct()
     {
@@ -80,22 +74,9 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-        
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): self
-    {
-        $this->phone = $phone;
 
         return $this;
     }
-
 
     /**
      * A visual identifier that represents this user.
@@ -115,14 +96,14 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    /**
+     /**
      * @see UserInterface
      */
     public function getRoles(): array
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles = ["ROLE_CANDIDATE"];
+        $roles = ["ROLE_ADMIN"];
 
         return array_unique($roles);
     }
@@ -198,5 +179,4 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }

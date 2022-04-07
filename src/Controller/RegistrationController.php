@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Admin;
 use App\Entity\Candidate;
 use App\Security\UserAuthenticator;
 use App\Form\UserRegistrationFormType;
+use App\Form\AdminRegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CandidateRegistrationFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -83,6 +84,40 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/candidateRegister.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/adminRegister', name: 'app_admin_register')]
+    public function AdminRegister(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UserAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+        $user = new Admin();
+        $form = $this->createForm(AdminRegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+            // do anything else you need here, like send an email
+
+            return $userAuthenticator->authenticateUser(
+                $user,
+                $authenticator,
+                $request
+            );
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('registration/adminRegister.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

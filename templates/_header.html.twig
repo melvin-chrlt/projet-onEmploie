@@ -4,13 +4,16 @@
         <div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {% if is_granted('ROLE_USER') %}
-                    <a href="/admin">Ajouter une offre</a>
+                    <a href="/addOffre">Ajouter une offre</a>
                     <a href="/allOffres">Voir les offres</a>
                     <a href="/logout" style="color:red;">Se déconnecter</a>
                 {% elseif is_granted('ROLE_CANDIDATE') %}
                     <a href="/profil">Profil</a>
                     {# <a href="{{ path("app_profil", {id:entity.id}) }}">Voir Profil</a> #}
                     <a href="/allOffres">Voir les offres</a>
+                    <a href="/logout" style="color:red;">Se déconnecter</a>
+                {% elseif is_granted('ROLE_ADMIN') %}
+                    <a href="/admin">Dashboard Admin</a>
                     <a href="/logout" style="color:red;">Se déconnecter</a>
                 {% endif %}
             {% else %}
