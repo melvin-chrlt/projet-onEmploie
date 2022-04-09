@@ -36,7 +36,7 @@ class CVController extends AbstractController
         ]);
     }
 
-    #[Route('/edit/{id<\d+>}', name:'app_edit_cv')]
+    #[Route('/cv/{id<\d+>}', name:'app_edit_cv')]
     #[IsGranted('ROLE_CANDIDATE')]
     public function edit(EntityManagerInterface $em, Request $request, CV $entity)
     {

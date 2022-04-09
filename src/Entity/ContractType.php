@@ -21,9 +21,13 @@ class ContractType
     #[ORM\OneToMany(mappedBy: 'contractType', targetEntity: Offres::class, orphanRemoval: true)]
     private $offres;
 
+    #[ORM\ManyToMany(targetEntity: Candidate::class, mappedBy: 'contractType')]
+    private $candidates;
+
     public function __construct()
     {
         $this->offres = new ArrayCollection();
+        $this->candidates = new ArrayCollection();
     }
 
     public function __toString()
@@ -73,6 +77,33 @@ class ContractType
             if ($offre->getContractType() === $this) {
                 $offre->setContractType(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Candidate>
+     */
+    public function getCandidates(): Collection
+    {
+        return $this->candidates;
+    }
+
+    public function addCandidate(Candidate $candidate): self
+    {
+        if (!$this->candidates->contains($candidate)) {
+            $this->candidates[] = $candidate;
+            $candidate->addContractType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidate(Candidate $candidate): self
+    {
+        if ($this->candidates->removeElement($candidate)) {
+            $candidate->removeContractType($this);
         }
 
         return $this;

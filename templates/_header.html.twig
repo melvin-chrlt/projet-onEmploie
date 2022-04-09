@@ -13,6 +13,7 @@
                     <a href="/allOffres">Voir les offres</a>
                     <a href="/logout" style="color:red;">Se déconnecter</a>
                 {% elseif is_granted('ROLE_ADMIN') %}
+                    <a href="/allOffres">Voir les offres</a>
                     <a href="/admin">Dashboard Admin</a>
                     <a href="/logout" style="color:red;">Se déconnecter</a>
                 {% endif %}

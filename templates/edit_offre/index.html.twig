@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du CV{% endblock %}
+
+{% block body %}
+    <section id="editOffre">
+        <h1>Modifier l'offre :</h1>
+        {{ form_start (form) }}
+            {{ form_widget (form) }}
+            <button type="submit">Modifier</button>
+        {{ form_end (form) }}
+    </section>
+{% endblock %}

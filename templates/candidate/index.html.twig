@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de profil{% endblock %}
+
+{% block body %}
+    <h1>Page de profil</h1>
+
+    <div id="addOffre">
+        {{ form_start (form) }}
+            {{ form_row (form) }}
+            <button type="submit" class="btn">Ajouter</button>
+        {{ form_end (form) }}
+    </div>
+{% endblock %}

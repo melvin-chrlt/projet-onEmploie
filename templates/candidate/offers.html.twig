@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offres pour vous{% endblock %}
+
+{% block body %}
+    <section id="addOffre">
+        <h2>Il y a {{offers|length}} offre(s) pour vous !</h2>
+        {% for offer in offers %}
+            <div>
+                <p>{{offer.name}}</p>
+                <p>{{offer.author.name}}</p>
+                <p>{{offer.description}}</p>
+                <p>{{offer.createdAt | date ('d/m/Y')}}</p>
+                {% if app.user in offer.applicants %}
+                    <a href={{ path ('app_offer_apply', {id:offer.id}) }}>Supprimer l'application</a>
+                {% else %}
+                    <a href={{ path ('app_offer_apply', {id:offer.id}) }}>Appliquer</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}

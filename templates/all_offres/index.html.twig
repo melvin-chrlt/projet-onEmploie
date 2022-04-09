@@ -31,13 +31,8 @@
                             <p>{{ entity.place }} </p>
                         </div>
                         <p>{{ entity.salary }} € /mois</p>
-                        {% for category in entity.categories %}
-                            <p>{{ category.label }}</p>
-                        {% endfor %}
-                        {% for contract in entity.contractType %}
-                            <p>{{ contract.label }}</p>
-                        {% endfor %}
-                        <p>{{ entity.description }} </p>
+                        <p>{{ entity.description|length > 75 ? entity.description|slice(0,75) ~ '...' : entity.description }} </p>
+                        <p>{{ entity.contractType.label }} </p>
                         <p>Publié le : {{ entity.createdAt | date('d/m/Y') }} </p>
                     </div>
                     <div id="more">

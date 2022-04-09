@@ -17,8 +17,9 @@ class OffresController extends AbstractController
     // -- ADD OFFER --
     #[Route('/addOffre', name: 'app_add_offre')]
     #[IsGranted('ROLE_USER')]
-    public function newOffres(Request $request, EntityManagerInterface $em): Response
+    public function newOffres(OffresRepository $entityRepository, Request $request, EntityManagerInterface $em): Response
     {
+        $entities = $entityRepository->findAll();
         $offres = new Offres(); //créer nouvelle offre
         $offres->setAuthor($this->getUser()); //récup l'auteur automatiquement
         $form = $this->createForm(OffresType::class, $offres); //créer un formulaire
@@ -34,7 +35,8 @@ class OffresController extends AbstractController
         }
         
         return $this->render('add_offres/index.html.twig', [
-            'formNewOffres' => $form->createView()
+            'formNewOffres' => $form->createView(),
+            'entities' => $entities,
         ]);
     }
 
@@ -111,5 +113,23 @@ class OffresController extends AbstractController
             $this->addFlash('error', 'Vous ne pouvez pas modifier ni supprimer une offre qui ne vous appartient pas.');
             return $this->redirectToRoute('app_mes_offres');
         }
+    }
+
+    // -- APPLY OFFER --     
+    #[Route('/apply/{id<\d+>}', name:'app_offer_apply')]
+    #[IsGranted('ROLE_CANDIDATE')]
+    public function apply(EntityManagerInterface $em, Offres $offer)
+    {
+        $user = $this->getUser();
+
+        if($offer->getApplicants()->contains($this->getUser())) {
+            $offer->removeApplicant($user);
+            $em->flush();
+        } else {
+            $offer->addApplicant($user);
+            $em->flush();
+        }
+        
+        return $this->redirectToRoute('app_candidate_offers');
     }
 }

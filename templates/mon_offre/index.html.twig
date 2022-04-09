@@ -9,6 +9,7 @@
         <p>Lieu : {{ entity.place }} </p>
         <p>Salaire : {{ entity.salary }} €</p>
         <p>Description : {{ entity.description }} </p>
+        <p>Type de contrat : {{ entity.contractType.label }} </p>
         <p>Publié le : {{ entity.createdAt | date('d/m/Y') }} </p>
         {% if is_granted('ROLE_USER') %}
             <a href="{{ path('app_edit_offre', {id:entity.id}) }}">Modifier</a>

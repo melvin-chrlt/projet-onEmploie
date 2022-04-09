@@ -38,9 +38,21 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Offres::class, orphanRemoval: true)]
     private $offres;
 
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'candidates')]
+    private $categories;
+
+    #[ORM\ManyToMany(targetEntity: ContractType::class, inversedBy: 'candidates')]
+    private $contractType;
+
+    #[ORM\ManyToMany(targetEntity: Offres::class, inversedBy: 'applicants')]
+    private $applications;
+
     public function __construct()
     {
         $this->offres = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->contractType = new ArrayCollection();
+        $this->applications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,6 +207,78 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
                 $offre->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ContractType>
+     */
+    public function getContractType(): Collection
+    {
+        return $this->contractType;
+    }
+
+    public function addContractType(ContractType $contractType): self
+    {
+        if (!$this->contractType->contains($contractType)) {
+            $this->contractType[] = $contractType;
+        }
+
+        return $this;
+    }
+
+    public function removeContractType(ContractType $contractType): self
+    {
+        $this->contractType->removeElement($contractType);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offres>
+     */
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(Offres $application): self
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications[] = $application;
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(Offres $application): self
+    {
+        $this->applications->removeElement($application);
 
         return $this;
     }

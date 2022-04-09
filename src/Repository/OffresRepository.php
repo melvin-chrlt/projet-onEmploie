@@ -3,10 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Offres;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
+use App\Entity\Candidate;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Offres|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,22 +46,22 @@ class OffresRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Offres[] Returns an array of Offres objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+      * @return Offres[] Returns an array of Offres objects
+      */
+    
+    public function findforUser(Candidate $candidate)
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.contract_type_id = :val')
+            ->setParameter('val', $candidate->getContractType())
+            ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Offres

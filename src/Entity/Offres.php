@@ -45,9 +45,13 @@ class Offres
     #[ORM\JoinColumn(nullable: false)]
     private $contractType;
 
+    #[ORM\ManyToMany(targetEntity: Candidate::class, mappedBy: 'applications')]
+    private $applicants;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->applicants = new ArrayCollection();
     }
 
     public function __toString()
@@ -193,6 +197,33 @@ class Offres
     public function setContractType(?ContractType $contractType): self
     {
         $this->contractType = $contractType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Candidate>
+     */
+    public function getApplicants(): Collection
+    {
+        return $this->applicants;
+    }
+
+    public function addApplicant(Candidate $applicant): self
+    {
+        if (!$this->applicants->contains($applicant)) {
+            $this->applicants[] = $applicant;
+            $applicant->addApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplicant(Candidate $applicant): self
+    {
+        if ($this->applicants->removeElement($applicant)) {
+            $applicant->removeApplication($this);
+        }
 
         return $this;
     }
