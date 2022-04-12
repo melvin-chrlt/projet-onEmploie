@@ -24,6 +24,8 @@ class CandidateController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+
+            return $this->redirectToRoute('app_candidate_offers');
         }
 
         return $this->renderForm('candidate/index.html.twig', [
@@ -31,7 +33,7 @@ class CandidateController extends AbstractController
         ]);
     }
 
-    #[Route('/offers', name: 'app_candidate_offres')]
+    #[Route('/offers', name: 'app_candidate_offers')]
     #[IsGranted('ROLE_CANDIDATE', message:"Vous devez être connecté en tant que chercheur d'emploi pour accéder à cette page.")]
     public function offers(CandidateRepository $candidateRepository, OffresRepository $offresRepository): Response
     {
@@ -53,6 +55,19 @@ class CandidateController extends AbstractController
 
         return $this->renderForm('candidate/offers.html.twig', [
             'offers' => array_unique($offersFiltered),
+        ]);
+    }
+
+    #[Route('/applications', name: 'app_candidate_applications')]
+    #[IsGranted('ROLE_CANDIDATE', message:"Vous devez être connecté en tant que chercheur d'emploi pour accéder à cette page.")]
+    public function applications(CandidateRepository $candidateRepository): Response
+    {
+        $user = $candidateRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+
+        $offers = $user->getApplications();
+
+        return $this->renderForm('candidate/applications.html.twig', [
+            'offers' => $offers,
         ]);
     }
 }

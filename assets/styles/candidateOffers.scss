@@ -1,0 +1,50 @@
+#candidateOffers{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em 0;
+
+    #offreLink{
+        color: white;
+        background-color: black;
+        padding: 0.5em;
+        border-radius: 25px;
+
+        span{
+            padding: 2px 5px;
+            border-radius: 50%;
+            background-color: lightblue;
+            color: black;
+        }
+    }
+
+    #sectionOffers{
+        padding: 1em 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5em;
+
+        div{
+            background-color: lightblue;
+            padding: 2em;
+            border-radius: 35px;
+
+            article{
+                margin-top: 1em;
+
+                .post{
+                    padding: 0.25em 1.25em;
+                    border-radius: 25px;
+                    background-color: green;
+                    color: white;
+                }
+
+                .del{
+                    background-color: red;
+                }
+            }
+        }
+
+    }
+}

@@ -11,6 +11,9 @@ import './styles/_header.scss';
 import './styles/home.scss';
 import './styles/formPage.scss';
 import './styles/allOffres.scss';
+import './styles/anOffer.scss';
+import './styles/cv.scss';
+import './styles/candidateOffers.scss';
 
 // start the Stimulus application
 import './bootstrap';

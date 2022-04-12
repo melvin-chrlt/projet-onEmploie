@@ -3,12 +3,15 @@
 {% block title %}Page de profil{% endblock %}
 
 {% block body %}
-    <h1>Page de profil</h1>
+<section id="cv">
+    <h1>Page de profil de {{app.user.firstName}}</h1>
 
-    <div id="addOffre">
+    <div id="offreForm">
         {{ form_start (form) }}
-            {{ form_row (form) }}
+            {{ form_row (form.categories, { label: 'Catégories :' }) }}
+            {{ form_row (form.contractType, { label: 'Type de contrat :' }) }}
             <button type="submit" class="btn">Ajouter</button>
         {{ form_end (form) }}
     </div>
+</section>
 {% endblock %}

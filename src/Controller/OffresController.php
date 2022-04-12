@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Offres;
 use App\Form\OffresType;
+use App\Repository\CategoryRepository;
+use App\Repository\ContractTypeRepository;
 use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,7 +19,7 @@ class OffresController extends AbstractController
     // -- ADD OFFER --
     #[Route('/addOffre', name: 'app_add_offre')]
     #[IsGranted('ROLE_USER')]
-    public function newOffres(OffresRepository $entityRepository, Request $request, EntityManagerInterface $em): Response
+    public function newOffres(OffresRepository $entityRepository, ContractTypeRepository $contractTypeRepository, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em): Response
     {
         $entities = $entityRepository->findAll();
         $offres = new Offres(); //créer nouvelle offre

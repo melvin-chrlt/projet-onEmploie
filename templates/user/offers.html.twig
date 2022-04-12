@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos offres{% endblock %}
+
+{% block body %}
+    <section id="anOffer">
+    <h1>Vos offres</h1>
+    {% if offers|length < 1 %}
+        <h3>Vous n'avez pas d'offre !</h3>
+    {% else %}
+        <div id="offres">
+            {% for offer in offers %}
+                <div>
+                    <p>{{offer.name}}</p>
+                    <p>{{offer.description}}</p>
+                    <p>{{offer.createdAt | date ('d/m/Y')}}</p>
+                    {% if app.user is same as (offer.author) %}
+                        <a href={{ path ('app_edit_offre', {id:offer.id}) }}>Modifier l'offre</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    </section>
+{% endblock %}

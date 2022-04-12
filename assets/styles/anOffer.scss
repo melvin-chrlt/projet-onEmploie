@@ -1,0 +1,56 @@
+#anOffer{
+    padding: 2em 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5em;
+
+    #offres{
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+        flex-wrap: wrap;
+    
+        div{
+            display: flex;
+            flex-direction: column;
+            background-color: lightblue;
+            padding: 3em;
+            border-radius: 35px;
+            width: 20%;
+        }
+    }
+
+    a{
+        display: inline-block;
+        text-align: center;
+        background-color: black;
+        border: black 1px solid;
+        padding: 0.5em 1.5em;
+        margin-top: 0.5em;
+        border-radius: 25px;
+        color: white;
+        transition: all ease-in-out 0.2s;
+    }
+
+    a:hover{
+        background-color: lightblue;
+        color: black;
+    }
+
+    button{
+        background-color: red;
+        border: red 1px solid;
+        padding: 0.5em 1.5em;
+        border-radius: 25px;
+        margin-top: 1em;
+        color: white;
+        cursor: pointer;
+        transition: all ease-in-out 0.2s;
+    }
+
+    button:hover{
+        background-color: red;
+        color: black;
+    }
+}

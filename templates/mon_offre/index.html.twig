@@ -3,9 +3,9 @@
 {% block title %}Mon offre{% endblock %}
 
 {% block body %}
-    <h1>Mon offre :</h1>
+<section id="anOffer">
+    <h1>{{ entity.name|capitalize }}</h1>
     <div>
-        <p>Poste : {{ entity.name }}</p>
         <p>Lieu : {{ entity.place }} </p>
         <p>Salaire : {{ entity.salary }} €</p>
         <p>Description : {{ entity.description }} </p>
@@ -16,8 +16,12 @@
             <form action="{{path('app_delete_offre', {id:entity.id})}}" method="POST">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token('entity_delete_' ~ entity.id) }}">
-                <button type="submit" style="background-color:red;">Supprimer</button>
+                <button type="submit">Supprimer</button>
             </form>
         {% endif %}
+        {% if is_granted('ROLE_CANDIDATE') %}
+            <a href="/mailer">Contacter</a>
+        {% endif %}
     </div>
+</section>
 {% endblock %}

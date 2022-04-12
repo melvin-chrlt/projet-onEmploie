@@ -11,22 +11,8 @@
             {{ form_row(formNewOffres.place, { label: 'Lieu :' }) }}
             {{ form_row(formNewOffres.salary, { label: 'Salaire :' }) }}
             {{ form_row(formNewOffres.description, { label: 'Description :' }) }}
-            
-            <select name="categories" id="categories">
-                {% for entity in entities %}
-                    {% for category in entity.categories %}
-                        <option value="{{ category.label }}">{{ category.label }}</option>
-                    {% endfor %}
-                {% endfor %}
-            </select>
-
-            <select name="contractType" id="contractType">
-                {% for entity in entities %}
-                    {% for contractType in entity.contractType %}
-                        <option value="{{ contractType.label }}">{{ contractType.label }}</option>
-                    {% endfor %}
-                {% endfor %}
-            </select>
+            {{ form_row(formNewOffres.categories, { label: 'Catégories :' }) }}
+            {{ form_row(formNewOffres.contractType, { label: 'Type de contrat :' }) }}
 
             <button type="submit" class="btn">Créer</button>
         {{ form_end(formNewOffres) }}

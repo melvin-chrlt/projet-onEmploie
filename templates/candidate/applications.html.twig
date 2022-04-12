@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Offres pour vous{% endblock %}
+{% block title %}Votre application{% endblock %}
 
 {% block body %}
     <section id="candidateOffers">
-        <h2>Il y a {{offers|length}} offre(s) correspondant à vos critères</h2>
-        <a href={{path('app_candidate_applications')}} id="offreLink">Vos offres postulées <span>{{app.user.applications|length}}</span></a>
+        {% if offers|length == 0 %}
+            <h3>Vous n'avez pas postulé à une offre</h3>
+        {% elseif offers|length == 1 %}
+            <h2>Vous avez postulé à une seule offre</h2>
+        {% else %}
+            <h2>Vous avez postulé à {{offers|length}} offre(s)</h2>
+        {% endif %}
         <div id="sectionOffers">
             {% for offer in offers %}
                 <div>
@@ -13,6 +18,7 @@
                     <p>{{offer.author.name}}</p>
                     <p>{{offer.description}}</p>
                     <p>{{offer.createdAt | date ('d/m/Y')}}</p>
+                    <a href="mailto:projet.melvin@gmail.com">Contacter</a>
                     <article>
                         {% if app.user in offer.applicants %}
                             <a href={{ path ('app_offer_apply', {id:offer.id}) }} class="post del">Supprimer la postulance</a>
